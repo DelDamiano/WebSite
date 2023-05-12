@@ -1,0 +1,62 @@
+Ecris moi en php 5 une fonction qui prend entrée : 
+-Un mapping ou chaque clé est un joueur et sa valeur la liste des factions qu'il a déjà joué
+-Une liste de factions
+La fonction renvoi de manière aléatoire une association joueur / faction avec les conditions :
+-Un joueur ne doit pas déjà avoir joué la faction associée.
+-Chaque joueur est associé à une faction différente des autres joueurs.
+-Les joueurs qui ont déjà joués toutes les factions tireront aléatoirement une faction parmis celles restantes tout à la fin de l'attribution.
+
+
+
+Corrige moi le code ci-dessous pour que chaque joueur tire toujours des factions différentes entre eux et tant que c'est possible ne rejoue pas des factions déjà jouées :
+
+
+function assignFactions($playerToFactionsMap, $factionsList) {
+  // Créer une copie du mapping joueur-factions pour pouvoir le modifier
+  $remainingFactions = $playerToFactionsMap;
+  $actions = array();
+  
+  // Pour chaque joueur dans le mapping
+  foreach ($playerToFactionsMap as $player => $playedFactions) {
+    // Sélectionner une faction aléatoire qui n'a pas été jouée par ce joueur
+    $unplayedFactions = array_diff($factionsList, $playedFactions);
+    
+    // Si le joueur a déjà joué toutes les factions, sélectionner une faction aléatoire dans la liste complète
+    if (empty($unplayedFactions)) {
+      $unplayedFactions = $factionsList;
+    }
+    
+    // Retirer de la liste des factions restantes les factions déjà jouées par les autres joueurs
+    foreach ($remainingFactions as $otherPlayer => $otherPlayedFactions) {
+      if ($otherPlayer !== $player) {
+        $unplayedFactions = array_diff($unplayedFactions, $otherPlayedFactions);
+      }
+    }
+    
+    // Sélectionner une faction aléatoire parmi les factions restantes
+    $factionIndex = array_rand($unplayedFactions);
+    $faction = $unplayedFactions[$factionIndex];
+    
+    // Ajouter l'action associant le joueur à la faction sélectionnée
+    $actions[$player] = $faction;
+    
+    // Enlever la faction sélectionnée de la liste des factions restantes pour les autres joueurs
+    unset($remainingFactions[$player][$factionIndex]);
+  }
+  
+  // Si des factions ont été retirées du mapping joueur-factions, les ajouter de nouveau à la liste des factions restantes
+  foreach ($remainingFactions as $player => $playedFactions) {
+    foreach ($playedFactions as $faction) {
+      $factionsList[] = $faction;
+    }
+  }
+  
+  // Retourner les actions associant chaque joueur à une faction différente non-jouée auparavant
+  return $actions;
+}
+
+
+
+
+
+Array ( [0] =>Rome [1] => Grèce [2] => Byzance [3] => Égypte [4] => Carthage  ) ------------------------------------------------------- Array ( [Hugo] => Array ( [0] => Rome [1] => Grèce [2] => Byzance [3] => Égypte ) [Guillaume] => Array ( [0] => Grèce [1] => Byzance [2] => Égypte [3] => Carthage ) [Damien] => Array ( [0] => Rome [1] => Grèce ) [Audrey] => Array ( [0] => Grèce [1] => Carthage ) [Anthony] => Array ( [0] => Égypte ) )
