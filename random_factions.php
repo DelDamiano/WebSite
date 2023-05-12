@@ -16,7 +16,7 @@
 
 		<!-- Header -->
 			<header id="header">
-				<a href="index.html" class="title">Del Damiano</a>
+				<a href="index.php" class="title"><img src="images/DelDamianoLogo.jpeg" alt="" width=5% height=40% />   Del Damiano Website</a>
 				<nav>
 					<ul>
 						<li><a href="index.php" >Home</a></li>
@@ -97,7 +97,7 @@
 			<footer id="footer" class="wrapper alt">
 				<div class="inner">
 					<ul class="menu">
-						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						<li>&copy; Del Damiano. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 					</ul>
 				</div>
 			</footer>
